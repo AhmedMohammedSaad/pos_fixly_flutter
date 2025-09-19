@@ -1,3 +1,5 @@
+import '../features/web/orders/domain/entities/order_entity.dart';
+
 class Order {
   final String? orderId;
   final String? customerId;
@@ -181,5 +183,31 @@ class Order {
       default:
         return 'متوسط';
     }
+  }
+
+  // Factory method to create Order from OrderEntity
+  factory Order.fromEntity(OrderEntity entity) {
+    return Order(
+      orderId: entity.orderId,
+      customerId: entity.customerId,
+      orderNumber: entity.orderNumber,
+      customerName: entity.customerName,
+      customerPhone: entity.customerPhone,
+      customerEmail: entity.customerEmail,
+      customerAddress: entity.customerAddress,
+      serviceType: entity.serviceType,
+      problemDescription: entity.problemDescription,
+      urgencyLevel: entity.urgencyLevel ?? 'medium',
+      preferredDate: entity.preferredDate,
+      preferredTimeSlot: entity.preferredTimeSlot,
+      estimatedBudget: entity.estimatedBudget,
+      specialRequirements: entity.specialRequirements,
+      accessInstructions: entity.accessInstructions,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+      reviewedAt: entity.reviewedAt,
+      quotedAt: entity.quotedAt,
+      status: entity.status,
+    );
   }
 }

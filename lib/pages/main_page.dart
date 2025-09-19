@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'new_dashboard_page.dart';
+
 import 'orders_page.dart';
 
 class MainPage extends StatefulWidget {
@@ -11,10 +11,10 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 1; // تغيير الافتراضي إلى الأوردرز (index 1)
-  final PageController _pageController = PageController(initialPage: 1); // البدء من صفحة الأوردرز
+  final PageController _pageController =
+      PageController(initialPage: 1); // البدء من صفحة الأوردرز
 
   final List<Widget> _pages = [
-    const NewDashboardPage(),
     const OrdersPage(),
   ];
 

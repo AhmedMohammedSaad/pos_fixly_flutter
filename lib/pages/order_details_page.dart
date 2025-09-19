@@ -7,9 +7,10 @@ import '../cubit/order_state.dart';
 class OrderDetailsPage extends StatefulWidget {
   final Order order;
 
-  const OrderDetailsPage({Key? key, required this.order}) : super(key: key);
+  const OrderDetailsPage({super.key, required this.order});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OrderDetailsPageState createState() => _OrderDetailsPageState();
 }
 
@@ -81,8 +82,12 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<OrderCubit, OrderState>(
-      listenWhen: (previous, current) => current is OrderUpdated || current is OrderDeleted || current is OrderError,
-      buildWhen: (previous, current) => current is OrdersLoaded || current is OrderUpdated,
+      listenWhen: (previous, current) =>
+          current is OrderUpdated ||
+          current is OrderDeleted ||
+          current is OrderError,
+      buildWhen: (previous, current) =>
+          current is OrdersLoaded || current is OrderUpdated,
       listener: (context, state) {
         if (state is OrderUpdated) {
           setState(() {
@@ -203,9 +208,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   title: 'حالة الطلب والأولوية',
                   icon: Icons.info,
                   children: [
-                     _buildInfoRow('الحالة', _order.status ?? 'غير محدد'),
-                     _buildInfoRow('الأولوية', _order.urgencyLevel),
-                     _buildInfoRow('رقم الطلب', _order.orderNumber ?? 'غير محدد'),
+                    _buildInfoRow('الحالة', _order.status ?? 'غير محدد'),
+                    _buildInfoRow('الأولوية', _order.urgencyLevel),
+                    _buildInfoRow(
+                        'رقم الطلب', _order.orderNumber ?? 'غير محدد'),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -213,9 +219,11 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   title: 'معلومات العميل',
                   icon: Icons.person,
                   children: [
-                     _buildInfoRow('الاسم', _order.customerName ?? 'غير محدد'),
-                     _buildInfoRow('رقم الهاتف', _order.customerPhone ?? 'غير محدد'),
-                     _buildInfoRow('العنوان', _order.customerAddress ?? 'غير محدد'),
+                    _buildInfoRow('الاسم', _order.customerName ?? 'غير محدد'),
+                    _buildInfoRow(
+                        'رقم الهاتف', _order.customerPhone ?? 'غير محدد'),
+                    _buildInfoRow(
+                        'العنوان', _order.customerAddress ?? 'غير محدد'),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -223,8 +231,10 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   title: 'تفاصيل الخدمة',
                   icon: Icons.build,
                   children: [
-                     _buildInfoRow('نوع الخدمة', _order.serviceType ?? 'غير محدد'),
-                     _buildInfoRow('وصف المشكلة', _order.problemDescription ?? 'غير محدد'),
+                    _buildInfoRow(
+                        'نوع الخدمة', _order.serviceType ?? 'غير محدد'),
+                    _buildInfoRow(
+                        'وصف المشكلة', _order.problemDescription ?? 'غير محدد'),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -232,8 +242,12 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   title: 'معلومات الموعد',
                   icon: Icons.schedule,
                   children: [
-                     _buildInfoRow('التاريخ المفضل', _order.preferredDate?.toString().split(' ')[0] ?? 'غير محدد'),
-                     _buildInfoRow('الوقت المفضل', _order.preferredTimeSlot ?? 'غير محدد'),
+                    _buildInfoRow(
+                        'التاريخ المفضل',
+                        _order.preferredDate?.toString().split(' ')[0] ??
+                            'غير محدد'),
+                    _buildInfoRow(
+                        'الوقت المفضل', _order.preferredTimeSlot ?? 'غير محدد'),
                   ],
                 ),
                 SizedBox(height: 16),
@@ -241,9 +255,19 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   title: 'التواريخ المهمة',
                   icon: Icons.calendar_today,
                   children: [
-                     _buildInfoRow('تاريخ الإنشاء', _order.createdAt?.toString().split(' ')[0] ?? 'غير محدد'),
-                     _buildInfoRow('آخر تحديث', _order.updatedAt?.toString().split(' ')[0] ?? 'غير محدد'),
-                     _buildInfoRow('الميزانية المقدرة', _order.estimatedBudget != null ? '${_order.estimatedBudget} ريال' : 'غير محدد'),
+                    _buildInfoRow(
+                        'تاريخ الإنشاء',
+                        _order.createdAt?.toString().split(' ')[0] ??
+                            'غير محدد'),
+                    _buildInfoRow(
+                        'آخر تحديث',
+                        _order.updatedAt?.toString().split(' ')[0] ??
+                            'غير محدد'),
+                    _buildInfoRow(
+                        'الميزانية المقدرة',
+                        _order.estimatedBudget != null
+                            ? '${_order.estimatedBudget} ريال'
+                            : 'غير محدد'),
                   ],
                 ),
               ],

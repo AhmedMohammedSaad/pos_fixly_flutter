@@ -1,11 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'pages/main_page.dart';
-import 'cubit/order_cubit.dart';
+import 'web_app.dart';
+import 'mobile_app.dart';
+import 'core/di/injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Dependency Injection
+  await di.init();
 
   await Supabase.initialize(
     url: 'https://mtxmzitasqtuukdhipav.supabase.co',
@@ -21,18 +25,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OrderCubit(),
-      child: MaterialApp(
-        title: 'Fixly Admin Dashboard',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-          fontFamily: 'Arial',
-        ),
-        home: const MainPage(),
-        debugShowCheckedModeBanner: false,
-      ),
-    );
+    // التوجيه التلقائي حسب المنصة
+    if (kIsWeb) {
+      // للويب: تطبيق منفصل مع تصميم مناسب للشاشات الكبيرة
+      return const WebApp();
+    } else {
+      // للموبايل: تطبيق منفصل مع تصميم متجاوب للشاشات المختلفة
+      return const MobileApp();
+    }
   }
 }

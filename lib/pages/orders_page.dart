@@ -49,7 +49,7 @@ class _OrdersPageState extends State<OrdersPage> {
     setState(() {
       _isRefreshing = true;
     });
-    
+
     try {
       await context.read<OrderCubit>().fetchAllOrders(forceRefresh: true);
     } finally {
@@ -285,10 +285,15 @@ class _OrdersPageState extends State<OrdersPage> {
                       ordersToShow = state.currentOrders;
                       break;
                     case 'pending':
-                      ordersToShow = state.orders.where((order) => order.status == 'pending' || order.status == null).toList();
+                      ordersToShow = state.orders
+                          .where((order) =>
+                              order.status == 'pending' || order.status == null)
+                          .toList();
                       break;
                     case 'in_progress':
-                      ordersToShow = state.orders.where((order) => order.status == 'in_progress').toList();
+                      ordersToShow = state.orders
+                          .where((order) => order.status == 'in_progress')
+                          .toList();
                       break;
                     case 'completed':
                       ordersToShow = state.completedOrders;
@@ -388,7 +393,7 @@ class _OrdersPageState extends State<OrdersPage> {
           Expanded(
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final crossAxisCount = _getCrossAxisCount(constraints.maxWidth);
+                final crossAxisCount = _getCrossAxisCount(800);
                 return GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -522,7 +527,8 @@ class _OrdersPageState extends State<OrdersPage> {
       padding: const EdgeInsets.all(20),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final crossAxisCount = _getCrossAxisCount(constraints.maxWidth);
+          final crossAxisCount =
+              _getCrossAxisCount(  800);
           return GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

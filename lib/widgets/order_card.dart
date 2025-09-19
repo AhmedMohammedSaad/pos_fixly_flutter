@@ -57,34 +57,34 @@ class _OrderCardState extends State<OrderCard>
   Color _getStatusColor(String? status) {
     switch (status) {
       case 'pending':
-        return const Color(0xFFFF8F00);
+        return const Color(0xFFF59E0B);
       case 'reviewed':
-        return const Color(0xFF1976D2);
+        return const Color(0xFF3B82F6);
       case 'quoted':
-        return const Color(0xFF7B1FA2);
+        return const Color(0xFF8B5CF6);
       case 'in_progress':
-        return const Color(0xFF303F9F);
+        return const Color(0xFF6366F1);
       case 'completed':
-        return const Color(0xFF388E3C);
+        return const Color(0xFF10B981);
       case 'cancelled':
-        return const Color(0xFFD32F2F);
+        return const Color(0xFFEF4444);
       default:
-        return const Color(0xFF616161);
+        return const Color(0xFF6B7280);
     }
   }
 
   Color _getUrgencyColor(String urgency) {
     switch (urgency) {
       case 'low':
-        return const Color(0xFF4CAF50);
+        return const Color(0xFF10B981);
       case 'medium':
-        return const Color(0xFFFF9800);
+        return const Color(0xFFF59E0B);
       case 'high':
-        return const Color(0xFFE53935);
+        return const Color(0xFFEF4444);
       case 'urgent':
-        return const Color(0xFFB71C1C);
+        return const Color(0xFFDC2626);
       default:
-        return const Color(0xFFFF9800);
+        return const Color(0xFFF59E0B);
     }
   }
 
@@ -153,37 +153,38 @@ class _OrderCardState extends State<OrderCard>
               },
               child: Container(
                 margin: widget.isGridView
-                    ? const EdgeInsets.all(4)
-                    : const EdgeInsets.only(bottom: 12),
+                    ? const EdgeInsets.all(6)
+                    : const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
                       Colors.white,
-                      _getStatusColor(widget.order.status).withOpacity(0.08),
+                      _getStatusColor(widget.order.status).withOpacity(0.03),
                       Colors.white,
                     ],
                     stops: const [0.0, 0.5, 1.0],
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
                       color: _getStatusColor(widget.order.status)
-                          .withOpacity(0.15),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                      spreadRadius: 2,
+                          .withOpacity(0.12),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                      spreadRadius: 0,
                     ),
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 0,
                     ),
                   ],
                   border: Border.all(
                     color:
-                        _getStatusColor(widget.order.status).withOpacity(0.2),
+                        _getStatusColor(widget.order.status).withOpacity(0.15),
                     width: 1.5,
                   ),
                 ),
@@ -199,33 +200,39 @@ class _OrderCardState extends State<OrderCard>
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(14),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
                                       _getStatusColor(widget.order.status)
-                                          .withOpacity(0.15),
+                                          .withOpacity(0.12),
                                       _getStatusColor(widget.order.status)
-                                          .withOpacity(0.05),
+                                          .withOpacity(0.06),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
                                       color:
                                           _getStatusColor(widget.order.status)
-                                              .withOpacity(0.2),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
+                                              .withOpacity(0.15),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 3),
+                                      spreadRadius: 0,
                                     ),
                                   ],
+                                  border: Border.all(
+                                    color: _getStatusColor(widget.order.status)
+                                        .withOpacity(0.2),
+                                    width: 1,
+                                  ),
                                 ),
                                 child: Icon(
                                   _getServiceIcon(widget.order.serviceType),
                                   color: _getStatusColor(widget.order.status),
-                                  size: widget.isGridView ? 22 : 26,
+                                  size: widget.isGridView ? 24 : 28,
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -236,10 +243,11 @@ class _OrderCardState extends State<OrderCard>
                                     Text(
                                       widget.order.orderNumber ?? 'غير محدد',
                                       style: TextStyle(
-                                        fontSize: widget.isGridView ? 16 : 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: widget.isGridView ? 17 : 19,
+                                        fontWeight: FontWeight.w700,
                                         color: _getStatusColor(
                                             widget.order.status),
+                                        letterSpacing: 0.3,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -248,9 +256,10 @@ class _OrderCardState extends State<OrderCard>
                                       Text(
                                         widget.order.serviceType!,
                                         style: TextStyle(
-                                          fontSize: widget.isGridView ? 12 : 14,
+                                          fontSize: widget.isGridView ? 13 : 15,
                                           color: Colors.grey.shade600,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.2,
                                         ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -263,27 +272,49 @@ class _OrderCardState extends State<OrderCard>
                           const SizedBox(height: 16),
                           // معلومات العميل
                           if (widget.order.customerName != null)
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person_outline,
-                                  size: widget.isGridView ? 14 : 16,
-                                  color: Colors.grey.shade600,
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade50,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: Colors.grey.shade200,
+                                  width: 1,
                                 ),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    widget.order.customerName!,
-                                    style: TextStyle(
-                                      fontSize: widget.isGridView ? 15 : 18,
-                                      color: Colors.grey.shade700,
-                                      fontWeight: FontWeight.w600,
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                    child: Icon(
+                                      Icons.person_outline_rounded,
+                                      size: widget.isGridView ? 16 : 18,
+                                      color: Colors.grey.shade600,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      widget.order.customerName!,
+                                      style: TextStyle(
+                                        fontSize: widget.isGridView ? 14 : 16,
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 0.2,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           if (widget.order.customerName != null)
                             const SizedBox(height: 10),
@@ -308,27 +339,28 @@ class _OrderCardState extends State<OrderCard>
                               // حالة الطلب
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
+                                  horizontal: 16,
+                                  vertical: 8,
                                 ),
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
                                     colors: [
                                       _getStatusColor(widget.order.status),
                                       _getStatusColor(widget.order.status)
-                                          .withOpacity(0.8),
+                                          .withOpacity(0.85),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(16),
+                                  borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
                                       color:
                                           _getStatusColor(widget.order.status)
-                                              .withOpacity(0.4),
-                                      blurRadius: 6,
-                                      offset: const Offset(0, 3),
+                                              .withOpacity(0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                      spreadRadius: 0,
                                     ),
                                   ],
                                 ),
@@ -336,35 +368,55 @@ class _OrderCardState extends State<OrderCard>
                                   _getStatusText(widget.order.status),
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: widget.isGridView ? 14 : 20,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: widget.isGridView ? 12 : 14,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.3,
                                   ),
                                 ),
                               ),
                               // مؤشر الأولوية
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 4,
+                                  horizontal: 12,
+                                  vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: _getUrgencyColor(
-                                          widget.order.urgencyLevel)
-                                      .withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      _getUrgencyColor(widget.order.urgencyLevel)
+                                          .withOpacity(0.15),
+                                      _getUrgencyColor(widget.order.urgencyLevel)
+                                          .withOpacity(0.08),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: _getUrgencyColor(
-                                        widget.order.urgencyLevel),
-                                    width: 1,
+                                        widget.order.urgencyLevel)
+                                        .withOpacity(0.3),
+                                    width: 1.5,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: _getUrgencyColor(
+                                          widget.order.urgencyLevel)
+                                          .withOpacity(0.2),
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
+                                      spreadRadius: 0,
+                                    ),
+                                  ],
                                 ),
                                 child: Text(
                                   _getUrgencyText(widget.order.urgencyLevel),
                                   style: TextStyle(
                                     color: _getUrgencyColor(
                                         widget.order.urgencyLevel),
-                                    fontSize: widget.isGridView ? 9 : 11,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: widget.isGridView ? 10 : 12,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 0.2,
                                   ),
                                 ),
                               ),
@@ -529,7 +581,7 @@ class _OrderCardState extends State<OrderCard>
 
     return Expanded(
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 2),
+        margin: const EdgeInsets.symmetric(horizontal: 3),
         decoration: BoxDecoration(
           gradient: isCurrentStatus
               ? LinearGradient(
@@ -537,65 +589,74 @@ class _OrderCardState extends State<OrderCard>
                   end: Alignment.bottomRight,
                   colors: [
                     color,
-                    color.withOpacity(0.8),
+                    color.withOpacity(0.85),
                   ],
                 )
               : LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    isDisabled ? Colors.grey.shade100 : color.withOpacity(0.1),
-                    isDisabled ? Colors.grey.shade50 : color.withOpacity(0.05),
+                    isDisabled ? Colors.grey.shade100 : color.withOpacity(0.08),
+                    isDisabled ? Colors.grey.shade50 : color.withOpacity(0.04),
                   ],
                 ),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isCurrentStatus
                 ? color
-                : (isDisabled ? Colors.grey.shade300 : color.withOpacity(0.3)),
-            width: isCurrentStatus ? 1.5 : 1,
+                : (isDisabled ? Colors.grey.shade300 : color.withOpacity(0.25)),
+            width: isCurrentStatus ? 2 : 1.5,
           ),
           boxShadow: isCurrentStatus
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.3),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
+                    color: color.withOpacity(0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                    spreadRadius: 0,
                   ),
                 ]
-              : [],
+              : [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                    spreadRadius: 0,
+                  ),
+                ],
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
             onTap: isDisabled || isCurrentStatus
                 ? null
                 : () {
                     widget.onStatusChanged(status);
                   },
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 6),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
                     icon,
-                    size: 14,
+                    size: 16,
                     color: isCurrentStatus
                         ? Colors.white
                         : (isDisabled ? Colors.grey.shade500 : color),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 4),
                   Text(
                     text,
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: 11,
                       color: isCurrentStatus
                           ? Colors.white
                           : (isDisabled ? Colors.grey.shade500 : color),
                       fontWeight:
-                          isCurrentStatus ? FontWeight.bold : FontWeight.w500,
+                          isCurrentStatus ? FontWeight.w700 : FontWeight.w600,
+                      letterSpacing: 0.2,
                     ),
                     textAlign: TextAlign.center,
                     maxLines: 2,
