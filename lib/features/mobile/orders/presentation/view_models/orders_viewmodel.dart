@@ -57,14 +57,14 @@ class OrdersViewModel extends ChangeNotifier {
 
     try {
       final orders = await _getAllOrdersUseCase(NoParams());
-      _orders = orders;
+      _orders = orders ?? <OrderEntity>[];
       _applyFilters();
-      
+
       if (kDebugMode) {
-        print('✅ تم تحميل ${orders.length} طلب بنجاح');
+        print('✅ تم تحميل ${_orders.length} طلب بنجاح');
       }
     } catch (e) {
-      _setError('فشل في تحميل الطلبات: ${e.toString()}');
+      _setError('فشل في تحميل الطلبات: $e');
       if (kDebugMode) {
         print('❌ خطأ في تحميل الطلبات: $e');
       }
@@ -75,26 +75,35 @@ class OrdersViewModel extends ChangeNotifier {
 
   /// Filter orders by status
   Future<void> filterOrdersByStatus(String? status) async {
-    _selectedFilter = status ?? 'all';
-    
-    if (status == null || status == 'all') {
-      await loadAllOrders();
+    final next = status?.trim().toLowerCase() ?? 'all';
+
+    if (_selectedFilter == next && _orders.isNotEmpty) {
+      _selectedFilter = next;
+      _applyFilters();
       return;
     }
 
+    _selectedFilter = next;
+
+    if (next == 'all') {
+      await loadAllOrders(forceRefresh: true);
+      return;
+    }
+
+    if (_isLoading) return;
     _setLoading(true);
     _clearError();
 
     try {
-      final orders = await _getOrdersByStatusUseCase(StringParams(status));
-      _orders = orders;
+      final orders = await _getOrdersByStatusUseCase(StringParams(next));
+      _orders = orders ?? <OrderEntity>[];
       _applyFilters();
-      
+
       if (kDebugMode) {
-        print('✅ تم تصفية الطلبات بحالة: $status');
+        print('✅ تم تصفية الطلبات بحالة: $next (عدد: ${_orders.length})');
       }
     } catch (e) {
-      _setError('فشل في تصفية الطلبات: ${e.toString()}');
+      _setError('فشل في تصفية الطلبات: $e');
       if (kDebugMode) {
         print('❌ خطأ في تصفية الطلبات: $e');
       }
@@ -105,26 +114,34 @@ class OrdersViewModel extends ChangeNotifier {
 
   /// Search orders
   Future<void> searchOrders(String query) async {
-    _searchQuery = query;
+    final q = query.trim();
 
-    if (query.isEmpty) {
-      await loadAllOrders();
+    if (_searchQuery == q && _orders.isNotEmpty) {
+      _applyFilters();
       return;
     }
 
+    _searchQuery = q;
+
+    if (q.isEmpty) {
+      await loadAllOrders(forceRefresh: true);
+      return;
+    }
+
+    if (_isLoading) return;
     _setLoading(true);
     _clearError();
 
     try {
-      final orders = await _searchOrdersUseCase(StringParams(query));
-      _orders = orders;
+      final orders = await _searchOrdersUseCase(StringParams(q));
+      _orders = orders ?? <OrderEntity>[];
       _applyFilters();
-      
+
       if (kDebugMode) {
-        print('✅ تم البحث عن: $query');
+        print('✅ تم البحث عن: "$q" (نتائج: ${_orders.length})');
       }
     } catch (e) {
-      _setError('فشل في البحث: ${e.toString()}');
+      _setError('فشل في البحث: $e');
       if (kDebugMode) {
         print('❌ خطأ في البحث: $e');
       }
@@ -135,18 +152,22 @@ class OrdersViewModel extends ChangeNotifier {
 
   /// Update order status
   Future<void> updateOrderStatus(String orderId, String newStatus) async {
+    if (orderId.isEmpty || newStatus.isEmpty) return;
+
     try {
       await _updateOrderStatusUseCase(
         UpdateStatusParams(id: orderId, status: newStatus),
       );
 
-      // Update local state
-      final orderIndex = _orders.indexWhere((order) => order.orderId == orderId);
+      final orderIndex =
+          _orders.indexWhere((order) => order.orderId == orderId);
+
       if (orderIndex != -1) {
-        // Create a new list with updated order
-        final updatedOrders = List<OrderEntity>.from(_orders);
-        // Note: In a real implementation, you'd need a copyWith method on OrderEntity
-        // For now, we'll reload the data
+        // لو عندك copyWith:
+        // final updated = _orders[orderIndex].copyWith(status: newStatus);
+        // _orders[orderIndex] = updated;
+        await loadAllOrders(forceRefresh: true);
+      } else {
         await loadAllOrders(forceRefresh: true);
       }
 
@@ -154,7 +175,7 @@ class OrdersViewModel extends ChangeNotifier {
         print('✅ تم تحديث حالة الطلب: $orderId إلى $newStatus');
       }
     } catch (e) {
-      _setError('فشل في تحديث حالة الطلب: ${e.toString()}');
+      _setError('فشل في تحديث حالة الطلب: $e');
       if (kDebugMode) {
         print('❌ خطأ في تحديث حالة الطلب: $e');
       }
@@ -170,12 +191,16 @@ class OrdersViewModel extends ChangeNotifier {
   void clearFilters() {
     _selectedFilter = 'all';
     _searchQuery = '';
-    loadAllOrders();
+
+    if (!_isLoading) {
+      loadAllOrders(forceRefresh: true);
+    }
+    _applyFilters();
   }
 
   /// Private methods
   void _applyFilters() {
-    _filteredOrders = List.from(_orders);
+    _filteredOrders = List<OrderEntity>.from(_orders);
     notifyListeners();
   }
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../models/order_model.dart';
-import '../cubit/order_cubit.dart';
-import '../cubit/order_state.dart';
+import '../../models/order_model.dart';
+import '../../cubit/order_cubit.dart';
+import '../../cubit/order_state.dart';
 
 class OrderCard extends StatefulWidget {
   final Order order;
@@ -385,23 +385,25 @@ class _OrderCardState extends State<OrderCard>
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                     colors: [
-                                      _getUrgencyColor(widget.order.urgencyLevel)
+                                      _getUrgencyColor(
+                                              widget.order.urgencyLevel)
                                           .withOpacity(0.15),
-                                      _getUrgencyColor(widget.order.urgencyLevel)
+                                      _getUrgencyColor(
+                                              widget.order.urgencyLevel)
                                           .withOpacity(0.08),
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: _getUrgencyColor(
-                                        widget.order.urgencyLevel)
+                                            widget.order.urgencyLevel)
                                         .withOpacity(0.3),
                                     width: 1.5,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
                                       color: _getUrgencyColor(
-                                          widget.order.urgencyLevel)
+                                              widget.order.urgencyLevel)
                                           .withOpacity(0.2),
                                       blurRadius: 6,
                                       offset: const Offset(0, 2),

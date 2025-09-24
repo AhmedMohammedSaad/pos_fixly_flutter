@@ -35,15 +35,15 @@ class ErrorOrdersWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            Text(
-              errorMessage,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-                height: 1.5,
-              ),
-            ),
+            // Text(
+            // errorMessage,
+            // textAlign: TextAlign.center,
+            // style: TextStyle(
+            // fontSize: 16,
+            // color: Colors.grey[600],
+            // height: 1.5,
+            // ),
+            // ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
               onPressed: onRetry,

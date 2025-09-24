@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../models/chart_data.dart';
+import '../../models/chart_data.dart';
 
 class InteractiveLineChart extends StatefulWidget {
   final List<ChartData> data;
@@ -375,7 +375,8 @@ class _InteractiveLineChartState extends State<InteractiveLineChart>
                   ),
                   children: [
                     TextSpan(
-                      text: '${widget.yAxisLabel}: ${data.value.toStringAsFixed(1)}',
+                      text:
+                          '${widget.yAxisLabel}: ${data.value.toStringAsFixed(1)}',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 11,

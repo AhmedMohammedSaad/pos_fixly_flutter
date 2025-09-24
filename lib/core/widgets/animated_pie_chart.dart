@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import '../models/chart_data.dart';
+import '../../models/chart_data.dart';
 import 'dart:math' as math;
 
 class AnimatedPieChart extends StatefulWidget {
@@ -65,7 +65,7 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     _rotationController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
@@ -145,8 +145,9 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
   }
 
   Widget _buildHeader() {
-    final totalValue = widget.data.fold<double>(0, (sum, item) => sum + (item as CustomPieChartData).value);
-    
+    final totalValue = widget.data.fold<double>(
+        0, (sum, item) => sum + (item as CustomPieChartData).value);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -253,7 +254,8 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
                       touchedIndex = -1;
                       return;
                     }
-                    touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                    touchedIndex =
+                        pieTouchResponse.touchedSection!.touchedSectionIndex;
                   });
                 },
               ),
@@ -270,7 +272,7 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
 
   List<PieChartSectionData> _buildPieSections() {
     final colors = widget.customColors ?? _defaultColors;
-    
+
     return widget.data.asMap().entries.map((entry) {
       final index = entry.key;
       final data = entry.value;
@@ -282,7 +284,9 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
       return PieChartSectionData(
         color: color,
         value: data.value * _animation.value,
-        title: widget.showPercentage ? '${data.percentage.toStringAsFixed(1)}%' : '',
+        title: widget.showPercentage
+            ? '${data.percentage.toStringAsFixed(1)}%'
+            : '',
         radius: radius,
         titleStyle: TextStyle(
           fontSize: fontSize,
@@ -330,7 +334,7 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
 
   Widget _buildLegend() {
     final colors = widget.customColors ?? _defaultColors;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -350,15 +354,17 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
               final data = widget.data[index];
               final color = colors[index % colors.length];
               final isSelected = index == touchedIndex;
-              
+
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isSelected ? color.withOpacity(0.1) : Colors.transparent,
+                  color:
+                      isSelected ? color.withOpacity(0.1) : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
-                  border: isSelected ? Border.all(color: color, width: 2) : null,
+                  border:
+                      isSelected ? Border.all(color: color, width: 2) : null,
                 ),
                 child: Row(
                   children: [
@@ -386,7 +392,9 @@ class _AnimatedPieChartState extends State<AnimatedPieChart>
                             data.label,
                             style: TextStyle(
                               fontSize: 12,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.w500,
                               color: const Color(0xFF2D3436),
                             ),
                           ),
@@ -442,9 +450,13 @@ class PieChartSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalValue = data.fold<double>(0, (sum, item) => sum + (item as CustomPieChartData).value);
+    final totalValue = data.fold<double>(
+        0, (sum, item) => sum + (item as CustomPieChartData).value);
     final maxItem = data.isNotEmpty
-        ? data.reduce((a, b) => (a as CustomPieChartData).value > (b as CustomPieChartData).value ? a : b)
+        ? data.reduce((a, b) =>
+            (a as CustomPieChartData).value > (b as CustomPieChartData).value
+                ? a
+                : b)
         : null;
 
     return Container(

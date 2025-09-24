@@ -30,8 +30,8 @@ class OrdersViewModel extends ChangeNotifier {
   final GetFilteredOrdersUseCase getFilteredOrdersUseCase;
   final GetSortedOrdersUseCase getSortedOrdersUseCase;
 
-  OrdersViewModel({
-    required this.getAllOrdersUseCase,
+  OrdersViewModel(
+    this.getAllOrdersUseCase, {
     required this.getOrdersByStatusUseCase,
     required this.searchOrdersUseCase,
     required this.getOrderByIdUseCase,
@@ -178,7 +178,7 @@ class OrdersViewModel extends ChangeNotifier {
     // Apply sorting
     _filteredOrders.sort((a, b) {
       dynamic aValue, bValue;
-      
+
       switch (_sortBy) {
         case 'customerName':
           aValue = a.customerName ?? '';

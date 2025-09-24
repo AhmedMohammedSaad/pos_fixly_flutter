@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
-import '../models/chart_data.dart';
+import '../../models/chart_data.dart';
 
 class TradingCandlestickChart extends StatefulWidget {
   final List<CandlestickData> data;
@@ -28,7 +28,8 @@ class TradingCandlestickChart extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<TradingCandlestickChart> createState() => _TradingCandlestickChartState();
+  State<TradingCandlestickChart> createState() =>
+      _TradingCandlestickChartState();
 }
 
 class _TradingCandlestickChartState extends State<TradingCandlestickChart>
@@ -128,9 +129,12 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
 
   Widget _buildHeader() {
     final currentPrice = widget.data.isNotEmpty ? widget.data.last.close : 0.0;
-    final previousPrice = widget.data.length > 1 ? widget.data[widget.data.length - 2].close : currentPrice;
+    final previousPrice = widget.data.length > 1
+        ? widget.data[widget.data.length - 2].close
+        : currentPrice;
     final priceChange = currentPrice - previousPrice;
-    final priceChangePercent = previousPrice != 0 ? (priceChange / previousPrice) * 100 : 0.0;
+    final priceChangePercent =
+        previousPrice != 0 ? (priceChange / previousPrice) * 100 : 0.0;
     final isPositive = priceChange >= 0;
 
     return Container(
@@ -176,14 +180,18 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
                     children: [
                       Icon(
                         isPositive ? Icons.trending_up : Icons.trending_down,
-                        color: isPositive ? widget.bullishColor : widget.bearishColor,
+                        color: isPositive
+                            ? widget.bullishColor
+                            : widget.bearishColor,
                         size: 16,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         '${isPositive ? '+' : ''}${priceChange.toStringAsFixed(2)} (${priceChangePercent.toStringAsFixed(2)}%)',
                         style: TextStyle(
-                          color: isPositive ? widget.bullishColor : widget.bearishColor,
+                          color: isPositive
+                              ? widget.bullishColor
+                              : widget.bearishColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -219,7 +227,7 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
           final index = entry.key;
           final timeframe = entry.value;
           final isSelected = selectedTimeframe == index;
-          
+
           return GestureDetector(
             onTap: () {
               setState(() {
@@ -229,14 +237,19 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? widget.bullishColor.withOpacity(0.2) : Colors.transparent,
+                color: isSelected
+                    ? widget.bullishColor.withOpacity(0.2)
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: isSelected ? Border.all(color: widget.bullishColor, width: 1) : null,
+                border: isSelected
+                    ? Border.all(color: widget.bullishColor, width: 1)
+                    : null,
               ),
               child: Text(
                 timeframe,
                 style: TextStyle(
-                  color: isSelected ? widget.bullishColor : Colors.grey.shade400,
+                  color:
+                      isSelected ? widget.bullishColor : Colors.grey.shade400,
                   fontSize: 12,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
@@ -296,9 +309,13 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
-          color: isActive ? widget.bullishColor.withOpacity(0.2) : Colors.black.withOpacity(0.3),
+          color: isActive
+              ? widget.bullishColor.withOpacity(0.2)
+              : Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(6),
-          border: isActive ? Border.all(color: widget.bullishColor, width: 1) : null,
+          border: isActive
+              ? Border.all(color: widget.bullishColor, width: 1)
+              : null,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -398,7 +415,8 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
     return series;
   }
 
-  List<ChartData> _calculateMovingAverage(List<CandlestickData> data, int period) {
+  List<ChartData> _calculateMovingAverage(
+      List<CandlestickData> data, int period) {
     final result = <ChartData>[];
     for (int i = period - 1; i < data.length; i++) {
       double sum = 0;
@@ -415,10 +433,10 @@ class _TradingCandlestickChartState extends State<TradingCandlestickChart>
 
   List<CartesianChartAnnotation> _buildAnnotations() {
     if (widget.data.isEmpty) return [];
-    
+
     final highestPoint = widget.data.reduce((a, b) => a.high > b.high ? a : b);
     final lowestPoint = widget.data.reduce((a, b) => a.low < b.low ? a : b);
-    
+
     return [
       CartesianChartAnnotation(
         widget: Container(

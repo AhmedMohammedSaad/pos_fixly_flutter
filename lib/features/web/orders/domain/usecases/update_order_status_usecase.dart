@@ -12,7 +12,8 @@ class UpdateOrderStatusParams {
   });
 }
 
-class UpdateOrderStatusUseCase implements UseCase<OrderEntity, UpdateOrderStatusParams> {
+class UpdateOrderStatusUseCase
+    implements UseCase<OrderEntity, UpdateOrderStatusParams> {
   final OrderRepository repository;
 
   UpdateOrderStatusUseCase(this.repository);

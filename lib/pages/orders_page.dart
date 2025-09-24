@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/order_cubit.dart';
 import '../cubit/order_state.dart';
 import '../models/order_model.dart';
-import '../widgets/order_card.dart';
+import '../core/widgets/order_card.dart';
 import 'order_details_page.dart';
 
 class OrdersPage extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../domain/entities/order_entity.dart';
 import '../models/order_model.dart';
 
 /// Remote data source for orders - handles API calls
@@ -19,16 +18,18 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   OrderRemoteDataSourceImpl({required SupabaseClient supabaseClient})
       : _supabaseClient = supabaseClient;
 
+  static const String _table = 'customer_orders';
+
   @override
   Future<List<OrderModel>> getAllOrders() async {
     try {
       final response = await _supabaseClient
-          .from('orders')
+          .from(_table)
           .select()
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((json) => OrderModel.fromJson(json))
+          .map((json) => OrderModel.fromJson(json as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw Exception('Failed to fetch orders: $e');
@@ -38,18 +39,20 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   @override
   Future<List<OrderModel>> getOrdersByStatus(String? status) async {
     try {
-      var query = _supabaseClient
-          .from('orders')
-          .select()
-          .order('created_at', ascending: false);
+      final response =
+          (status != null && status.isNotEmpty && status.toLowerCase() != 'all')
+              ? await _supabaseClient
+                  .from(_table)
+                  .select()
+                  .eq('status', status)
+                  .order('created_at', ascending: false)
+              : await _supabaseClient
+                  .from(_table)
+                  .select()
+                  .order('created_at', ascending: false);
 
-      if (status != null && status.isNotEmpty) {
-        query = query.eq('status', status);
-      }
-
-      final response = await query;
       return (response as List)
-          .map((json) => OrderModel.fromJson(json))
+          .map((json) => OrderModel.fromJson(json as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw Exception('Failed to fetch orders by status: $e');
@@ -60,13 +63,17 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<List<OrderModel>> searchOrders(String query) async {
     try {
       final response = await _supabaseClient
-          .from('orders')
+          .from(_table)
           .select()
-          .or('customer_name.ilike.%$query%,order_number.ilike.%$query%,service_type.ilike.%$query%')
+          .or(
+            'customer_name.ilike.%$query%,'
+            'order_number.ilike.%$query%,'
+            'service_type.ilike.%$query%',
+          )
           .order('created_at', ascending: false);
 
       return (response as List)
-          .map((json) => OrderModel.fromJson(json))
+          .map((json) => OrderModel.fromJson(json as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw Exception('Failed to search orders: $e');
@@ -77,12 +84,12 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   Future<OrderModel> getOrderById(String id) async {
     try {
       final response = await _supabaseClient
-          .from('orders')
+          .from(_table)
           .select()
-          .eq('order_id', id)
+          .eq('order_id', id) // ← غيّرها لـ 'id' لو ده العمود الصحيح
           .single();
 
-      return OrderModel.fromJson(response);
+      return OrderModel.fromJson(response as Map<String, dynamic>);
     } catch (e) {
       throw Exception('Failed to fetch order by id: $e');
     }
@@ -91,22 +98,27 @@ class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
   @override
   Future<void> updateOrderStatus(String id, String status) async {
     try {
-      await _supabaseClient
-          .from('orders')
-          .update({'status': status, 'updated_at': DateTime.now().toIso8601String()})
-          .eq('order_id', id);
+      await _supabaseClient.from(_table).update({
+        'status': status,
+        'updated_at': DateTime.now().toIso8601String(),
+      }).eq('order_id', id); // ← غيّرها لـ 'id' لو العمود الصحيح
     } catch (e) {
       throw Exception('Failed to update order status: $e');
     }
   }
 
   @override
-  Future<void> deleteOrder(String id) async {
+  // يعيد true لو صف واحد على الأقل اتشلّ
+  Future<bool> deleteOrder(String id) async {
     try {
-      await _supabaseClient
-          .from('orders')
+      final res = await _supabaseClient
+          .from('customer_orders')
           .delete()
-          .eq('order_id', id);
+          .eq('status', 'cancelled')
+          .select('id'); // v2: يرجّع المحذوف
+
+      final deletedCount = (res as List).length;
+      return deletedCount > 0;
     } catch (e) {
       throw Exception('Failed to delete order: $e');
     }
